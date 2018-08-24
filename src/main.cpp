@@ -1,7 +1,7 @@
 
 #include "vector2.hpp"
 #include "tsp.hpp"
-#include "sa.hpp"
+#include "sannealing.hpp"
 
 #include <vector>
 #include <cstdlib>
