@@ -1,5 +1,8 @@
 # The Travelling Salesman Problem in C++
 
+## Issues
+* TSP creates duplicate elements
+
 ## Compiling & Running:
 ```bash
 make; ./bin/TSP
