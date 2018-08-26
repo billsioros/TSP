@@ -27,24 +27,24 @@ T SimulatedAnnealing(
         return ncost < ccost ? 1.0 : std::exp((ccost - ncost) / temperature);
     };
 
-    T current = initial;
-    
-    T best = initial; double bcost = cost(best);
+    T current    = initial,       best  = current;
+    double ccost = cost(current), bcost = ccost;
 
     std::size_t counter = 0UL;
     while (counter++ < iterations && temperature > 1.0)
     {
         T next = neighbour(current);
 
-        const double ccost = cost(current);
         const double ncost = cost(next);
 
         if (probability(ccost, ncost) > rand01())
-            current = next;
+        {
+            current = next; ccost = ncost;
+        }
 
         if (ccost < bcost)
         {
-            best = current; bcost = cost(best);
+            best = current; bcost = ccost;
             
             counter = 0UL;
         }

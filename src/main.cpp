@@ -15,7 +15,7 @@ T str2num(const char *);
 
 int main(int argc, char * argv[])
 {
-    double MIN = -100.0, MAX = 100.0; std::size_t SIZE = 8UL;
+    double MIN = -100.0, MAX = 100.0; std::size_t SIZE = 24UL;
 
     if (argc > 3)
     {
