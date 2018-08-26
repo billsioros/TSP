@@ -34,11 +34,11 @@ TSP::path<T> TSP::nearestNeighbor(
         }
 
         path.second.push_back(*nearest); vertices.erase(nearest);
-        path.first += minCost;
     }
 
-    path.first += cost(path.second.back(), depot);
     path.second.push_back(depot);
+
+    path.first = totalCost<T>(path.second, cost);
 
     return path;
 }
