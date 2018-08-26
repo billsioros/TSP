@@ -50,6 +50,9 @@ int main(int argc, char * argv[])
     TSP::path<Vector2> path;
     
     path = TSP::nearestNeighbor<Vector2>(depot, points, cost);
+
+    std::cout << path << std::endl;
+
     path = TSP::opt2<Vector2>(path.second.front(), path.second, cost);
 
     #ifndef __TEST__
@@ -67,7 +70,9 @@ int main(int argc, char * argv[])
             const std::size_t i = 1UL + std::rand() % (next.size() - 2UL);
             const std::size_t j = 1UL + std::rand() % (next.size() - 2UL);
 
-            std::reverse(next.begin() + i, next.begin() + j);
+            const Vector2 temp(next[i]);
+            next[i] = next[j];
+            next[j] = temp;
 
             return next;
         },

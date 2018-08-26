@@ -7,6 +7,7 @@
 #include <utility>          // std::pair
 #include <fstream>          // std::ostream
 #include <unordered_map>    // std::unordered_map
+#include <algorithm>        // std::reverse
 
 template <typename T>
 TSP::path<T> TSP::nearestNeighbor(
@@ -143,19 +144,12 @@ TSP::path<T> TSP::opt2(
     auto opt2swap =
     [&totalCost](const path<T>& old, std::size_t i, std::size_t k)
     {
-        path<T> current(0.0, std::vector<T>(old.second.size(), T()));
-
         // 1. take route[0] to route[i-1] and add them in order to new_route
-        for (std::size_t j = 0UL; j < i; j++)
-            current.second[j] = old.second[j];
-
         // 2. take route[i] to route[k] and add them in reverse order to new_route
-        for (std::size_t j = i; j <= k; j++)
-            current.second[j] = old.second[old.second.size() - 1UL - j];
-
         // 3. take route[k+1] to end and add them in order to new_route
-        for (std::size_t j = k + 1UL; j < old.second.size(); j++)
-            current.second[j] = old.second[j];
+        path<T> current(0.0, old.second);
+
+        std::reverse(current.second.begin() + i, current.second.begin() + k);
 
         current.first = totalCost(current.second);
 
