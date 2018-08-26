@@ -51,50 +51,59 @@ int main(int argc, char * argv[])
     
     path = TSP::nearestNeighbor<Vector2>(depot, points, cost);
 
-    std::cout << path << std::endl;
-
-    path = TSP::opt2<Vector2>(path.second.front(), path.second, cost);
-
     #ifndef __TEST__
-    std::cout << "\n" << path << std::endl;
+    std::cout << "NN:\n" << path << std::endl;
     #else
     std::cout << "NN: " << path.first << std::endl;
     #endif
 
-    path.second = SimulatedAnnealing<std::vector<Vector2>>(
-        path.second,
-        [](const std::vector<Vector2>& current)
+    path = TSP::opt2<Vector2>(path.second.front(), path.second, cost);
+
+    #ifndef __TEST__
+    std::cout << "OPT21:\n" << path << std::endl;
+    #else
+    std::cout << "OPT21: " << path.first << std::endl;
+    #endif
+
+    path = SimulatedAnnealing<TSP::path<Vector2>>(
+        path,
+        [&cost](const TSP::path<Vector2>& current)
         {
-            std::vector<Vector2> next(current);
+            TSP::path<Vector2> next(0.0, current.second);
 
-            const std::size_t i = 1UL + std::rand() % (next.size() - 2UL);
-            const std::size_t j = 1UL + std::rand() % (next.size() - 2UL);
+            const std::size_t i = 1UL + std::rand() % (next.second.size() - 2UL);
+            const std::size_t j = 1UL + std::rand() % (next.second.size() - 2UL);
 
-            const Vector2 temp(next[i]);
-            next[i] = next[j];
-            next[j] = temp;
+            const Vector2 temp(next.second[i]);
+            next.second[i] = next.second[j];
+            next.second[j] = temp;
+
+            for (std::size_t j = 0; j < next.second.size() - 1UL; j++)
+                next.first += cost(next.second[j], next.second[j + 1UL]);
 
             return next;
         },
-        [&cost](const std::vector<Vector2>& current)
+        [](const TSP::path<Vector2>& path)
         {
-            double total = 0.0;
-            for (std::size_t j = 0; j < current.size() - 1UL; j++)
-                total += cost(current[j], current[j + 1UL]);
-
-            return total;
+            return path.first;
         },
         1000000.0,
         0.00003,
         1000000UL
     );
 
+    #ifndef __TEST__
+    std::cout << "SA:\n" << path << std::endl;
+    #else
+    std::cout << "SA: " << path.first << std::endl;
+    #endif
+
     path = TSP::opt2<Vector2>(path.second.front(), path.second, cost);
 
     #ifndef __TEST__
-    std::cout << "\n" << path << std::endl;
+    std::cout << "OPT22:\n" << path << std::endl;
     #else
-    std::cout << "SA: " << path.first << std::endl;
+    std::cout << "OPT22: " << path.first << std::endl;
     #endif
 }
 
