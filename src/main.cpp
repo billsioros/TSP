@@ -78,8 +78,7 @@ int main(int argc, char * argv[])
             next.second[i] = next.second[j];
             next.second[j] = temp;
 
-            for (std::size_t j = 0; j < next.second.size() - 1UL; j++)
-                next.first += cost(next.second[j], next.second[j + 1UL]);
+            next.first = TSP::totalCost<Vector2>(next.second, cost);
 
             return next;
         },

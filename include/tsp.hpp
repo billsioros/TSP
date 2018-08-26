@@ -15,19 +15,28 @@ namespace TSP
     path<T> nearestNeighbor(
         const T&,
         const std::vector<T>&,
-        const std::function<double(const T&, const T&)>&);
+        const std::function<double(const T&, const T&)>&
+    );
 
     template <typename T>
     path<T> multiFragment(
         const T&,
         const std::vector<T>&,
-        const std::function<double(const T&, const T&)>&);
+        const std::function<double(const T&, const T&)>&
+    );
 
     template <typename T>
     path<T> opt2(
         const T&,
         const std::vector<T>&,
-        const std::function<double(const T&, const T&)>&);
+        const std::function<double(const T&, const T&)>&
+    );
+
+    template <typename T>
+    double totalCost(
+        const std::vector<T>&,
+        const std::function<double(const T&, const T&)>&
+    );
 }
 
 template <typename T>

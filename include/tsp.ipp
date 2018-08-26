@@ -131,18 +131,8 @@ TSP::path<T> TSP::opt2(
     const std::vector<T>& initial,
     const std::function<double(const T&, const T&)>& cost)
 {
-    auto totalCost =
-    [&cost](const std::vector<T>& path)
-    {
-        double total = 0.0;
-        for (std::size_t j = 0; j < path.size() - 1UL; j++)
-            total += cost(path[j], path[j + 1UL]);
-
-        return total;
-    };
-
     auto opt2swap =
-    [&totalCost](const path<T>& old, std::size_t i, std::size_t k)
+    [&cost](const path<T>& old, std::size_t i, std::size_t k)
     {
         // 1. take route[0] to route[i-1] and add them in order to new_route
         // 2. take route[i] to route[k] and add them in reverse order to new_route
@@ -151,12 +141,12 @@ TSP::path<T> TSP::opt2(
 
         std::reverse(current.second.begin() + i, current.second.begin() + k);
 
-        current.first = totalCost(current.second);
+        current.first = totalCost<T>(current.second, cost);
 
         return current;
     };
 
-    path<T> best(totalCost(initial), initial);
+    path<T> best(totalCost(initial, cost), initial);
     for (std::size_t i = 0; i < best.second.size() - 1; i++)
     {
         for (std::size_t k = i + 1UL; k < best.second.size(); k++)
@@ -171,6 +161,19 @@ TSP::path<T> TSP::opt2(
     }
 
     return best;
+}
+
+template <typename T>
+double TSP::totalCost(
+    const std::vector<T>& path,
+    const std::function<double(const T&, const T&)>& cost
+)
+{
+    double tcost = 0.0;
+    for (std::size_t j = 0; j < path.size() - 1UL; j++)
+        tcost += cost(path[j], path[j + 1UL]);
+
+    return tcost;
 }
 
 template <typename T>
