@@ -16,6 +16,8 @@ T SimulatedAnnealing(
     std::size_t iterations
 )
 {
+    const double _temperature = temperature;
+
     std::srand(static_cast<unsigned>(std::time(nullptr)));
     auto rand01 = []()
     {
@@ -31,7 +33,7 @@ T SimulatedAnnealing(
     double ccost = cost(current), bcost = ccost;
 
     std::size_t counter = 0UL;
-    while (counter++ < iterations && temperature > 1.0)
+    do 
     {
         T next = neighbour(current);
 
@@ -46,11 +48,9 @@ T SimulatedAnnealing(
         {
             best = current; bcost = ccost;
             
-            counter = 0UL;
+            counter = 0UL; temperature = _temperature;
         }
-
-        temperature *= (1.0 - cooling);
-    }
+    } while (counter++ < iterations && (temperature *= (1.0 - cooling)) > 1.0);
 
     return best;
 }
