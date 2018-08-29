@@ -33,7 +33,7 @@ T SimulatedAnnealing(
     double ccost = cost(current), bcost = ccost;
 
     std::size_t counter = 0UL;
-    do 
+    do
     {
         T next = neighbour(current);
 
