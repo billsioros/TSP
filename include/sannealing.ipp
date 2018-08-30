@@ -18,7 +18,6 @@ T SimulatedAnnealing(
 {
     const double _temperature = temperature;
 
-    std::srand(static_cast<unsigned>(std::time(nullptr)));
     auto rand01 = []()
     {
         return static_cast<double>(std::rand()) / static_cast<double>(RAND_MAX);
