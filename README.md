@@ -10,6 +10,7 @@ make; ./bin/TSP
 * Multi Fragment
 * Opt 2
 * Simulated Annealing
+* Compressed Annealing (Currently being implemented)
 
 ## For testing purposes:
 * average.sh: Given an executable, a string and a number of iterations, it runs the specified executable the specified amount of times and then calculates the average of the values denoted by the specified string.

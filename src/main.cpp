@@ -1,7 +1,7 @@
 
 #include "vector2.hpp"
 #include "tsp.hpp"
-#include "sannealing.hpp"
+#include "annealing.hpp"
 
 #include <vector>
 #include <cstdlib>
@@ -65,7 +65,7 @@ int main(int argc, char * argv[])
     std::cout << "OPT21: " << path.first << std::endl;
     #endif
 
-    path = SimulatedAnnealing<TSP::path<Vector2>>(
+    path = Annealing::simulated<TSP::path<Vector2>>(
         path,
         [&cost](const TSP::path<Vector2>& current)
         {
@@ -86,8 +86,8 @@ int main(int argc, char * argv[])
         {
             return path.first;
         },
-        1000000.0,
-        0.00003,
+        1000000000.0,
+        0.0015,
         1000000UL
     );
 
