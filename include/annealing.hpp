@@ -17,7 +17,7 @@ namespace Annealing
 
     template <typename T>
     T compressed(
-        const T&,
+        const T& initial,
         const std::function<T(const T&)>&,
         const std::function<double(const T&)>&,
         const std::function<double(const T&)>&,
@@ -26,7 +26,10 @@ namespace Annealing
         double,
         double,
         double,
-        double,
+        std::size_t,
+        std::size_t,
+        std::size_t,
+        std::size_t,
         std::size_t
     );
 }

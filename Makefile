@@ -1,12 +1,20 @@
 
 PATH_BIN = ./bin
 
-.PHONY: all
-all:
+.PHONY: TSP
+TSP:
 	@echo "\n*** Compiling TSP ***"
 	@echo "***"
-	mkdir -p ./bin
-	g++ $(DEFLAGS) -g3 -W -I include/ -std=c++14 src/main.cpp src/vector2.cpp -o $(PATH_BIN)/TSP
+	mkdir -p $(PATH_BIN)
+	g++ $(DEFLAGS) -g3 -W -I include/ -std=c++14 src/tsp.cpp src/vector2.cpp -o $(PATH_BIN)/TSP
+	@echo "***"
+
+.PHONY: TSPTW
+TSPTW:
+	@echo "\n*** Compiling TSPTW ***"
+	@echo "***"
+	mkdir -p $(PATH_BIN)
+	g++ -g3 -W -I include/ -std=c++14 src/tsptw.cpp src/vector2.cpp -o $(PATH_BIN)/TSPTW
 	@echo "***"
 
 .PHONY: test
@@ -15,7 +23,7 @@ test:
 
 .PHONY: clean
 clean:
-	@echo "\n*** Purging TSP ***"
+	@echo "\n*** Purging $(PATH_BIN) ***"
 	@echo "***"
 	rm -rv $(PATH_BIN)
 	@echo "***"
