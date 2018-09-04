@@ -6,19 +6,19 @@
 
 int main()
 {
-    double MIN = -100.0, MAX = 100.0; std::size_t SIZE = 24UL;
-
     std::srand((unsigned)std::time(nullptr));
 
     auto frand = [](double min, double max)
     {
         return min + (max - min) * (static_cast<double>(std::rand()) / static_cast<double>(RAND_MAX));
     };
+    
+    double MIN = -100.0, MAX = 100.0; std::size_t SIZE = 24UL;
 
     std::vector<Vector2> points;
 
     for (std::size_t i = 0; i < SIZE; i++)
-        points.emplace_back(frand(-MAX, MAX), frand(-MAX, MAX));
+        points.emplace_back(frand(MIN, MAX), frand(MIN, MAX));
 
     auto euclidean2 =
     [](const Vector2& A, const Vector2& B)
@@ -37,7 +37,7 @@ int main()
 
     std::cout << "NN:\n" << path << std::endl;
 
-    auto shift1 = [](const TSP::path<Vector2>& current)
+    auto shift1 = [&euclidean2](const TSP::path<Vector2>& current)
     {
         TSP::path<Vector2> next(0.0, current.second);
 
@@ -48,12 +48,14 @@ int main()
         next.second.erase(next.second.begin() + i);
         next.second.insert(next.second.begin() + j, v);
 
+        next.first = TSP::totalCost<Vector2>(next.second, euclidean2);
+
         return next;
     };
 
-    auto cost = [&euclidean2](const TSP::path<Vector2>& path)
+    auto cost = [](const TSP::path<Vector2>& path)
     {
-        return TSP::totalCost<Vector2>(path.second, euclidean2);
+        return path.first;
     };
 
     auto penalty = [](const TSP::path<Vector2>& path)
