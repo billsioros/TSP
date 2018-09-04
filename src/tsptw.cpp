@@ -60,7 +60,7 @@ int main()
 
     auto penalty = [](const TSP::path<Vector2>& path)
     {
-        return 0.0;
+        return 1.0;
     };
 
      // Parameter Initialization (Robust Set provided by the authors):
