@@ -3,6 +3,7 @@
 #include "tsp.hpp"
 #include "vector2.hpp"
 #include <iostream>
+#include <map>
 
 int main()
 {
@@ -15,10 +16,13 @@ int main()
     
     double MIN = -100.0, MAX = 100.0; std::size_t SIZE = 24UL;
 
-    std::vector<Vector2> points;
+    std::vector<Vector2> points; std::map<Vector2, Vector2> timewindows;
 
     for (std::size_t i = 0; i < SIZE; i++)
+    {
         points.emplace_back(frand(MIN, MAX), frand(MIN, MAX));
+        timewindows[points.back()] = Vector2(frand(7.15, 7.30), frand(7.45, 8.00));
+    }
 
     auto euclidean2 =
     [](const Vector2& A, const Vector2& B)
@@ -29,13 +33,36 @@ int main()
         return xdiff * xdiff + ydiff * ydiff;
     };
 
+    auto service = []()
+    {
+        return 30.0;
+    };
+
+    auto penalty = [&euclidean2, &timewindows](const TSP::path<Vector2>& path)
+    {
+        double penalty = 0.0, partial = 0.0;
+        for (std::size_t j = 0; j < path.second.size() - 1UL; j++)
+        {
+            const Vector2& previous = path.second[j];
+            const Vector2& current  = path.second[j + 1UL];
+
+            partial += euclidean2(previous, current);
+
+            const double departure = std::max<double>(partial, timewindows[current].x());
+
+            penalty += std::max<double>(0.0, departure - timewindows[current].y());
+        }
+
+        return penalty;
+    };
+
     Vector2 depot(0.0, 0.0);
 
     TSP::path<Vector2> path;
     
     path = TSP::nearestNeighbor<Vector2>(depot, points, euclidean2);
 
-    std::cout << "NN:\n" << path << std::endl;
+    std::cout << "NN:\n" << path << " Penalty: " << penalty(path) << std::endl;
 
     auto shift1 = [&euclidean2](const TSP::path<Vector2>& current)
     {
@@ -56,11 +83,6 @@ int main()
     auto cost = [](const TSP::path<Vector2>& path)
     {
         return path.first;
-    };
-
-    auto penalty = [](const TSP::path<Vector2>& path)
-    {
-        return 1.0;
     };
 
      // Parameter Initialization (Robust Set provided by the authors):
@@ -94,7 +116,7 @@ int main()
         TNP
     );
 
-    std::cout << "CA:\n" << path << std::endl;
+    std::cout << "CA:\n" << path << " Penalty: " << penalty(path) << std::endl;
 
     return 0;
 }
