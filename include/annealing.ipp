@@ -111,12 +111,7 @@ T Annealing::compressed(
         return neval < ceval ? 1.0 : std::exp((ceval - neval) / temperature);
     };
 
-    for
-    (
-        std::size_t accepted = 0UL;
-        (static_cast<double>(accepted) / static_cast<double>(TLI)) < ACCEPTANCE;
-        accepted = 0UL, temperature *= 1.5
-    )
+    for (std::size_t accepted = 0UL; ; accepted = 0UL, temperature *= 1.5)
     {
         T current = initial;
     
@@ -140,6 +135,9 @@ T Annealing::compressed(
                 accepted++;
             }
         }
+
+        if ((static_cast<double>(accepted) / static_cast<double>(TLI)) >= ACCEPTANCE)
+            break;
     }
     
     // Step 2: Actual Algorithm
@@ -149,7 +147,7 @@ T Annealing::compressed(
     double cpnlt = penalty(current), bpnlt = cpnlt;
 
     double pressure = PRESSURE0;
-    for (std::size_t k = 0UL, idle = 0UL; !(k >= MTC && idle >= ITC) ; k++, idle++)
+    for (std::size_t k = 0UL, idle = 0UL; ; k++, idle++)
     {
         for (std::size_t i = 0; i < IPT; i++)
         {
@@ -173,6 +171,9 @@ T Annealing::compressed(
                 idle = 0UL;
             }
         }
+
+        if (k >= MTC && idle >= ITC)
+            break;
         
         temperature *= COOLING;
 
