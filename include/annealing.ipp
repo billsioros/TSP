@@ -89,8 +89,8 @@ T Annealing::compressed(
 
         dv += std::abs(e2 - e1);
 
-        const double c1pressure = (c1 * PCR) / (p1 * (1.0 - PCR));
-        const double c2pressure = (c2 * PCR) / (p2 * (1.0 - PCR));
+        const double c1pressure = (c1 / p1) * (PCR / (1.0 - PCR));
+        const double c2pressure = (c2 / p2) * (PCR / (1.0 - PCR));
 
         if (c1pressure > MAXPRESSURE)
             MAXPRESSURE = c1pressure;
