@@ -12,7 +12,7 @@ public:
     Vector2();
     Vector2(double, double);
     Vector2(const Vector2&);
-    Vector2(const Vector2&&) noexcept;
+    Vector2(Vector2&&) noexcept;
 
     // Access:
     double x() const { return _x; }
@@ -24,7 +24,7 @@ public:
 
     // Operations:
     Vector2& operator=(const Vector2&);
-    Vector2& operator=(const Vector2&&);
+    Vector2& operator=(Vector2&&) noexcept;
 
     friend Vector2 operator+(const Vector2&, const Vector2&);
     friend Vector2 operator-(const Vector2&, const Vector2&);

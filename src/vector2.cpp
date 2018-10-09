@@ -23,7 +23,7 @@ _x(other._x), _y(other._y)
 {
 }
 
-Vector2::Vector2(const Vector2&& other) noexcept
+Vector2::Vector2(Vector2&& other) noexcept
 :
 _x(std::move(other._x)), _y(std::move(other._y))
 {
@@ -55,7 +55,7 @@ Vector2& Vector2::operator=(const Vector2& other)
     return *this;
 }
 
-Vector2& Vector2::operator=(const Vector2&& other)
+Vector2& Vector2::operator=(Vector2&& other) noexcept
 {
     _x = std::move(other._x);
     _y = std::move(other._y);
