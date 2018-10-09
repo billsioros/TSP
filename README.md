@@ -7,7 +7,6 @@ make; ./bin/TSP
 
 ## Implemented Algorithms:
 * Nearest Neighbour
-* Multi Fragment
 * Opt 2
 * Simulated Annealing
 * Compressed Annealing (Currently being implemented)
