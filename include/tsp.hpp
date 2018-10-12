@@ -33,6 +33,7 @@ protected:
 
 public:
 
+    tsp();
     tsp
     (
         const T&,
@@ -81,6 +82,7 @@ public:
 
     using Timewindow = Vector2;
 
+    tsptw();
     tsptw
     (
         const T& depot,

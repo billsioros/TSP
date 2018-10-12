@@ -9,6 +9,7 @@
 #include <iomanip>          // std::setw
 #include <algorithm>        // std::reverse
 #include <stdexcept>        // std::invalid_argument
+#include <limits>           // std::numeric_limits
 
 // Class tsp:
 template <typename  T>
@@ -28,6 +29,17 @@ double tsp<T>::_totalCost() const
     _cost += _partialCost(_elements.back(), _depot);
 
     return _cost;
+}
+
+template <typename T>
+tsp<T>::tsp()
+:
+_depot(0.0, 0.0),
+_elements(),
+_serviceTime([](const T& t) { return std::numeric_limits<double>().max(); }),
+_duration([](const T& A, const T& B) { return std::numeric_limits<double>().max(); }),
+_cost(std::numeric_limits<double>().max())
+{
 }
 
 template <typename T>
@@ -233,6 +245,16 @@ double tsptw<T>::_totalPenalty() const
     _penalty += _partialPenalty(arrivalTime, this->_elements.back(), this->_depot);
 
     return _penalty;
+}
+
+template <typename T>
+tsptw<T>::tsptw()
+:
+tsp<T>(),
+_departureTime(std::numeric_limits<double>().max()),
+_timewindow([](const T& t) { return Vector2(0.0, 0.0) }),
+_penalty(std::numeric_limits<double>().max())
+{
 }
 
 template <typename T>
