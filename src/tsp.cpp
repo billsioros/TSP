@@ -47,62 +47,38 @@ int main(int argc, char * argv[])
 
     Vector2 depot(0.0, 0.0);
 
-    TSP::path<Vector2> path;
+    tsp<Vector2> path(depot, points, [](const Vector2& v) { return 0.0; }, cost);
     
-    path = TSP::nearestNeighbor<Vector2>(depot, points, cost);
+    path = path.nneighbour();
 
     #ifndef __TEST__
     std::cout << "NN:\n" << path << std::endl;
     #else
-    std::cout << "NN: " << path.first << std::endl;
+    std::cout << "NN: " << path.cost() << std::endl;
     #endif
 
-    path = TSP::opt2<Vector2>(path.second.front(), path.second, cost);
+    path = path.opt2();
 
     #ifndef __TEST__
     std::cout << "OPT21:\n" << path << std::endl;
     #else
-    std::cout << "OPT21: " << path.first << std::endl;
+    std::cout << "OPT21: " << path.cost() << std::endl;
     #endif
 
-    path = Annealing::simulated<TSP::path<Vector2>>(
-        path,
-        [&cost](const TSP::path<Vector2>& current)
-        {
-            TSP::path<Vector2> next(0.0, current.second);
-
-            const std::size_t i = 1UL + std::rand() % (next.second.size() - 2UL);
-            const std::size_t j = 1UL + std::rand() % (next.second.size() - 2UL);
-
-            const Vector2 temp(next.second[i]);
-            next.second[i] = next.second[j];
-            next.second[j] = temp;
-
-            next.first = TSP::totalCost<Vector2>(next.second, cost);
-
-            return next;
-        },
-        [](const TSP::path<Vector2>& path)
-        {
-            return path.first;
-        },
-        1000000000.0,
-        0.0015,
-        1000000UL
-    );
+    path = path.sannealing();
 
     #ifndef __TEST__
     std::cout << "SA:\n" << path << std::endl;
     #else
-    std::cout << "SA: " << path.first << std::endl;
+    std::cout << "SA: " << path.cost() << std::endl;
     #endif
 
-    path = TSP::opt2<Vector2>(path.second.front(), path.second, cost);
+    path = path.opt2();
 
     #ifndef __TEST__
     std::cout << "OPT22:\n" << path << std::endl;
     #else
-    std::cout << "OPT22: " << path.first << std::endl;
+    std::cout << "OPT22: " << path.cost() << std::endl;
     #endif
 }
 
