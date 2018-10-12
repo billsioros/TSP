@@ -34,7 +34,7 @@ double tsp<T>::_totalCost() const
 template <typename T>
 tsp<T>::tsp()
 :
-_depot(0.0, 0.0),
+_depot(),
 _elements(),
 _serviceTime([](const T& t) { return std::numeric_limits<double>().max(); }),
 _duration([](const T& A, const T& B) { return std::numeric_limits<double>().max(); }),
@@ -251,8 +251,8 @@ template <typename T>
 tsptw<T>::tsptw()
 :
 tsp<T>(),
-_departureTime(std::numeric_limits<double>().max()),
-_timewindow([](const T& t) { return Vector2(0.0, 0.0); }),
+_departureTime(0.0),
+_timewindow([](const T& t) { return Vector2; }),
 _penalty(std::numeric_limits<double>().max())
 {
 }
