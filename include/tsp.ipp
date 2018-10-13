@@ -252,7 +252,7 @@ tsptw<T>::tsptw()
 :
 tsp<T>(),
 _departureTime(0.0),
-_timewindow([](const T& t) { return Vector2; }),
+_timewindow([](const T& t) { return Vector2(); }),
 _penalty(std::numeric_limits<double>().max())
 {
 }
