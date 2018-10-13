@@ -14,7 +14,7 @@ TSPTW:
 	@echo "\n*** Compiling TSPTW ***"
 	@echo "***"
 	mkdir -p $(PATH_BIN)
-	g++ -g3 -W -I include/ -std=c++14 src/tsptw.cpp src/vector2.cpp -o $(PATH_BIN)/TSPTW
+	g++ -g3 -W -I include/ -std=c++14 src/tsptw.cpp src/vector2.cpp src/tstamp.cpp -o $(PATH_BIN)/TSPTW
 	@echo "***"
 
 .PHONY: test

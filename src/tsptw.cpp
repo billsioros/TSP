@@ -1,6 +1,7 @@
 
 #include "annealing.hpp"
 #include "tsp.hpp"
+#include "tstamp.hpp"
 #include "vector2.hpp"
 #include <iostream>
 #include <map>
@@ -16,12 +17,20 @@ int main()
     
     double MIN = -100.0, MAX = 100.0; std::size_t SIZE = 24UL;
 
-    std::vector<Vector2> points; std::map<Vector2, Vector2> timewindows;
+    std::vector<Vector2> points; std::map<Vector2, tsptw<Vector2>::Timewindow> timewindows;
 
     for (std::size_t i = 0; i < SIZE; i++)
     {
         points.emplace_back(frand(MIN, MAX), frand(MIN, MAX));
-        timewindows[points.back()] = Vector2(frand(7.15, 7.30), frand(7.45, 8.00));
+
+        TStamp l(7, static_cast<uint8_t>(frand(15.0, 30.0)));
+        TStamp r(8, static_cast<uint8_t>(frand(0.0,  15.0)));
+
+        timewindows[points.back()] = tsptw<Vector2>::Timewindow
+        (
+            static_cast<double>(l.seconds()),
+            static_cast<double>(r.seconds())
+        );
     }
 
     auto timewindow = [&timewindows](const Vector2& point)
@@ -40,7 +49,18 @@ int main()
 
     Vector2 depot(0.0, 0.0);
 
-    tsptw<Vector2> path(depot, points, [](const Vector2& v) { return 30.0; }, euclidean2, 27000.0, timewindow);
+    tsptw<Vector2> path
+    (
+        depot,
+        points,
+        [&depot](const Vector2& v)
+        {
+            return v == depot ? 0.0 : 30.0;
+        },
+        euclidean2,
+        TStamp(7, 30).seconds(),
+        timewindow
+    );
 
     path = path.nneighbour();
 
