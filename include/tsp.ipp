@@ -192,7 +192,7 @@ tsp<T> tsp<T>::sannealing() const
         const std::size_t i = std::rand() % next.size();
         const std::size_t j = std::rand() % next.size();
 
-        const Vector2 element(next[i]);
+        const T element(next[i]);
         next[i] = next[j];
         next[j] = element;
 
