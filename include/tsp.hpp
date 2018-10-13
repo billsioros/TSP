@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "vector2.hpp"
+#include <utility>      // std::pair
 #include <functional>   // std::function
 #include <vector>       // std::vector
 #include <iosfwd>       // std::ostream
@@ -71,7 +71,7 @@ class tsptw : public tsp<T>
 {
     double _departureTime;
 
-    std::function<Vector2(const T&)> _timewindow;
+    std::function<std::pair<double, double>(const T&)> _timewindow;
 
     double _penalty;
 
@@ -80,7 +80,7 @@ class tsptw : public tsp<T>
 
 public:
 
-    using Timewindow = Vector2;
+    using Timewindow = std::pair<double, double>;
 
     tsptw();
     tsptw

@@ -222,13 +222,13 @@ double tsptw<T>::_partialPenalty(double& arrivalTime, const T& A, const T& B) co
     const double startOfService = std::max<double>
     (
         arrivalTime,
-        this->_timewindow(B).x()
+        this->_timewindow(B).first
     );
 
     return std::max<double>
     (
         0.0,
-        startOfService + this->_serviceTime(B) - this->_timewindow(B).y()
+        startOfService + this->_serviceTime(B) - this->_timewindow(B).second
     );
 }
 
@@ -252,7 +252,7 @@ tsptw<T>::tsptw()
 :
 tsp<T>(),
 _departureTime(0.0),
-_timewindow([](const T& t) { return Vector2(); }),
+_timewindow([](const T& t) { return std::make_pair(0.0, 0.0); }),
 _penalty(std::numeric_limits<double>().max())
 {
 }
