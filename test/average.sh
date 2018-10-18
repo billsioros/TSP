@@ -36,7 +36,7 @@ then
     exit 3
 fi
 
-total=0
+avg=0
 count=0
 ratios=$(grep "$delimeter" "$output" | cut -f2 -d ":")
 
@@ -48,8 +48,8 @@ fi
 
 for ratio in $ratios
 do
-    total=$(echo $total + $ratio | bc); ((count++));
+    avg=$(echo "$avg + $ratio / $count" | bc); ((count++));
 done
 
 echo -n "Average of \"${delimeter}\" flagged values read from ${output}: "
-echo "scale = 2; $total / $count" | bc
+echo "scale = 2; $avg" | bc
