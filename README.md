@@ -11,7 +11,7 @@
 * [An Effective Heuristic Algorithm for the Travelling-Salesman Problem](https://pubsonline.informs.org/doi/10.1287/opre.21.2.498)
 
 ## Examples:
-### Data initialization - TSP
+### TSP
 ```C++
 // Seed the random number generator
 std::srand(static_cast<unsigned>(std::time(nullptr)));
@@ -28,28 +28,7 @@ Vector2 depot(0.0, 0.0);
 std::vector<Vector2> points;
 for (std::size_t i = 0; i < SIZE; i++)
     points.emplace_back(frand(-MAX, MAX), frand(-MAX, MAX));
-```
 
-### Data initialization - TSPTW
-```C++
-// Map each previously created point to a timewindow
-for (const auto& point : points)
-{
-    // Maybe check tstamp.cpp
-    // for implementation details on the TStamp struct ("Timestamp")
-    TStamp l(7, static_cast<uint8_t>(frand(15.0, 30.0)));
-    TStamp r(8, static_cast<uint8_t>(frand(0.0,  15.0)));
-
-    timewindows[point] = tsptw<Vector2>::Timewindow
-    (
-        static_cast<double>(l.seconds()),
-        static_cast<double>(r.seconds())
-    );
-}
-```
-
-### TSP
-```C++
 try
 {
     // Initialize the tsp<Vector2> class with 4 parameters
@@ -98,6 +77,21 @@ catch (std::exception& e)
 
 ### TSPTW
 ```C++
+// Map each previously created point to a timewindow
+for (const auto& point : points)
+{
+    // Maybe check tstamp.cpp
+    // for implementation details on the TStamp struct ("Timestamp")
+    TStamp l(7, static_cast<uint8_t>(frand(15.0, 30.0)));
+    TStamp r(8, static_cast<uint8_t>(frand(0.0,  15.0)));
+
+    timewindows[point] = tsptw<Vector2>::Timewindow
+    (
+        static_cast<double>(l.seconds()),
+        static_cast<double>(r.seconds())
+    );
+}
+
 try
 {
     // Initialize the tsp<Vector2> class with 6 parameters
@@ -145,12 +139,3 @@ catch (std::exception& e)
     std::cerr << e.what() << std::endl;
 }
 ```
-
-## Testing:
-* average.sh: Given an executable, a string and a number of iterations, it runs the specified executable the specified amount of times and then calculates the average of the values denoted by the specified string.
-* results.sh: A complimentary script that runs the average.sh script multiple times for different search strings.
-Note:
-``` bash
-./average.sh ../bin/TSP "NN: " 10 results.txt 1
-```
-1 is passed as an arguement only in the first run of average.sh, resulting in the creation of a file named results.txt which contains the necessary info for the average.sh script to produce an output. Consecutive runs of average.sh process the same results.txt file
